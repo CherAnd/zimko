@@ -26,14 +26,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'MainMenu',
   computed: {
-    ...mapGetters([
-      'notes'
-    ])
+    notes () {
+      return Object.values(this.$store.state.notes.all)
+    }
   }
 }
 </script>

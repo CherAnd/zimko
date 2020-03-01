@@ -112,7 +112,7 @@ export default {
       else return parseInt(this.$route.params.id)
     },
     note () {
-      let n = this.getNoteById(this.id)
+      let n = this.$store.state.notes.all[this.id]
       if (n) return n
       else return { title: '', body: '' }
     },

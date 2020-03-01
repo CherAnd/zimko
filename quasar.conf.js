@@ -99,7 +99,7 @@ module.exports = function (ctx) {
       // https: true,
       // port: 8080,
       proxy: {
-        '/api': 'http://zametka:8000'
+        '/api': 'http://127.0.0.1:8000'
       },
       open: false // opens browser window automatically
     },

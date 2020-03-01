@@ -31,7 +31,7 @@ export default {
     MainMenu
   },
   beforeCreate () {
-    this.$store.dispatch('fetchNotes')
+    this.$store.dispatch('notes/list')
   },
   data () {
     return {

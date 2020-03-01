@@ -40,7 +40,7 @@ export default {
   name: 'Index',
   computed: {
     notes () {
-      return this.$store.state.notes
+      return Object.values(this.$store.state.notes.all)
     }
   },
   methods: {
