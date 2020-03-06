@@ -11,6 +11,7 @@
       <q-toggle
         icon="create"
         v-model="isEditable"
+        color="orange-10"
       />
         </div>
       <q-btn
@@ -36,6 +37,7 @@
         class="q-mt-md"
         flat
         :readonly="!isEditable"
+        toolbar-toggle-color="orange-10"
       />
   </q-page>
 </template>
