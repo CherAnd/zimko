@@ -15,7 +15,7 @@ const store = new Vuex.Store({
   },
   state: {
     accessToken: null,
-    user: new User.CreateGuest(),
+    user: new User(),
     loggingIn: false,
     loginError: null,
     // notes: [],

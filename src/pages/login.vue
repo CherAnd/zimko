@@ -12,7 +12,7 @@
       <a href="/register">Register</a>
     </q-card-section>
     <q-card-actions>
-      <q-btn color="white" text-color="black" label="Submit login" @click="loginSubmit" />
+      <q-btn color="primary" label="Submit login" @click="loginSubmit" />
     </q-card-actions>
     </q-card>
   </q-page>

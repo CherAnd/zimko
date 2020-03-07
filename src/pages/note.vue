@@ -4,18 +4,18 @@
       <div class="row justify-between">
         <div>
           <q-btn
-        flat
-        icon="save"
-        @click="save()"
-      />
-      <q-toggle
-        icon="create"
-        v-model="isEditable"
-        color="orange-10"
-      />
+            color="primary"
+            icon="save"
+            @click="save()"
+          />
+        <q-toggle
+          icon="create"
+          v-model="isEditable"
+          color="primary"
+        />
         </div>
       <q-btn
-        flat
+        color="primary"
         icon="delete"
         @click="deleteNote()"
       />
@@ -37,16 +37,21 @@
         class="q-mt-md"
         flat
         :readonly="!isEditable"
-        toolbar-toggle-color="orange-10"
       />
   </q-page>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { Note } from 'src/models/classes'
 
 export default {
   name: 'note',
+  props: {
+    id: {
+      type: String,
+      default: 'new'
+    }
+  },
   data () {
     return {
       title: 'Loading...',
@@ -65,75 +70,31 @@ export default {
         ['left', 'center', 'right', 'justify'],
         ['bold', 'italic', 'underline', 'strike'],
         ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
-        // [
-        //   {
-        //     label: this.$q.lang.editor.fontSize,
-        //     icon: this.$q.iconSet.editor.fontSize,
-        //     fixedLabel: true,
-        //     fixedIcon: true,
-        //     list: 'no-icons',
-        //     options: [
-        //       'size-1',
-        //       'size-2',
-        //       'size-3',
-        //       'size-4',
-        //       'size-5',
-        //       'size-6',
-        //       'size-7'
-        //     ]
-        //   },
-        //   {
-        //     label: this.$q.lang.editor.defaultFont,
-        //     icon: this.$q.iconSet.editor.font,
-        //     fixedIcon: true,
-        //     list: 'no-icons',
-        //     options: [
-        //       'default_font',
-        //       'arial',
-        //       'arial_black',
-        //       'comic_sans',
-        //       'courier_new',
-        //       'impact',
-        //       'lucida_grande',
-        //       'times_new_roman',
-        //       'verdana'
-        //     ]
-        //   },
-        //   'removeFormat'
-        // ],
         ['insert_img']
       ]
     }
   },
   mounted () {
-    if (this.$route.params.id === 'new') this.isEditable = true
+    if (this.id === 'new') this.isEditable = true
   },
   computed: {
-    id () {
-      if (this.$route.params.id === 'new') return 0
-      else return parseInt(this.$route.params.id)
-    },
     note () {
       let n = this.$store.state.notes.all[this.id]
-      if (n) return n
-      else return { title: '', body: '' }
-    },
-    ...mapGetters([
-      'getNoteById'
-    ])
+      if (typeof n !== 'undefined') return n
+      else return new Note()
+    }
   },
   watch: {
     note: {
       handler: function (val) {
         this.title = val.title
-        this.body = val.body
+        this.body = val.body || ''
       },
       immediate: true
     }
   },
   methods: {
     insertImg () { // insertImg method
-      // let post = this.body
       // create an input file element to open file dialog
       const input = document.createElement('input')
       input.type = 'file'
@@ -150,29 +111,28 @@ export default {
           dataUrl = reader.result
           // append result to the body of your post
           this.body += `<div><img src='${dataUrl}' /></div>`
-          // document.execCommand('insertHTML', true, `<div><img src="${dataUrl}" /></div>`)
         }
         reader.readAsDataURL(file)
       }
       input.click()
     },
     save () {
-      if (this.id === 0) {
-        this.$store.dispatch('addNote', { title: this.title, body: this.body })
+      if (this.id === 'new') {
+        this.$store.dispatch('notes/insert', new Note(this.title, this.body))
           .then((id) => {
             this.$router.push('/note/' + id)
           })
-      } else this.$store.dispatch('updateNote', { id: parseInt(this.id), value: { title: this.title, body: this.body } })
+      } else this.$store.dispatch('notes/update', { id: this.id, value: new Note(this.title, this.body) })
     },
     deleteNote () {
       this.$q.dialog({
-        title: 'Confirm',
-        message: 'Realy delete?',
+        title: 'Удалить',
+        message: 'Точно удалить?',
         cancel: true,
         persistent: false
       }).onOk(() => {
-        this.$store.dispatch('deleteNote', this.id)
-          .then(this.$router.push('/'))
+        this.$router.push('/')
+        this.$store.dispatch('notes/remove', this.id)
       })
     }
   }

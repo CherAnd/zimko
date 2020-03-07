@@ -24,7 +24,7 @@
       <q-btn
         id="new_note"
         round
-        color="orange-10"
+        color="accent"
         @click="newNote()"
         icon="add"
       />

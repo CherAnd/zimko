@@ -62,11 +62,8 @@ store.actions = {
     })
   },
   remove ({ commit, dispatch, state }, id) {
-    return new Promise((resolve, reject) => {
-      axios.delete('/api/notes/' + id).then((response) => {
-        commit('remove', id)
-        resolve()
-      })
+    axios.delete('/api/notes/' + id).then(() => {
+      commit('remove', id)
     })
   }
 }

@@ -1,13 +1,24 @@
-export class User {
-  constructor (id, name, email) {
-    this.id = id
-    this.name = name
-    this.email = email
-  }
-  static CreateGuest () {
-    return new User(0, 'Guest', 'user@mail.ru')
-  }
+
+export function User (id = '0', name = 'Guest', email = 'user@mail.ru') {
+  this.id = id
+  this.name = name
+  this.email = email
 }
+
+export function Note (title = '', body = '') {
+  this.title = title
+  this.body = body
+}
+
+// export class User {
+//   constructor (id, name, email) {
+//     this.id = id
+//     this.name = name
+//     this.email = email
+//   }
+//   static CreateGuest () {
+//     return new User(0, 'Guest', 'user@mail.ru')
+//   }
 
 // export class Note {
 //   constructor (id, date, title, body, created_at, updated_at, user_id) {

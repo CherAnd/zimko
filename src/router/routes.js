@@ -12,7 +12,7 @@ const routes = [
     path: '/note/:id',
     component: () => import('layouts/default'),
     children: [
-      { path: '', component: () => import('pages/note') }
+      { path: '', component: () => import('pages/note'), props: true }
     ],
     meta: { requiresAuth: true }
   },
