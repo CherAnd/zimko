@@ -83,6 +83,9 @@ const store = new Vuex.Store({
             reject(error)
           })
       })
+    },
+    doLogout ({ commit }) {
+      commit('updateAccessToken', '')
     }
   }
 })
