@@ -23,14 +23,14 @@
 
       <q-input
         borderless
-        v-model.lazy="title"
+        v-model.lazy="note.title"
         class="note_title"
         :readonly="!isEditable"
         autofocus
         placeholder="Title"
       />
       <q-editor
-        v-model.lazy="body"
+        v-model.lazy="note.body"
         :definitions="definitions"
         :toolbar="toolbar"
         height="75vh"
@@ -49,13 +49,12 @@ export default {
   props: {
     id: {
       type: String,
-      default: 'new'
+      default: ''
     }
   },
   data () {
     return {
-      title: 'Loading...',
-      body: '',
+      note: new Note(),
       isEditable: false,
       definitions: {
         insert_img: {
@@ -74,21 +73,17 @@ export default {
       ]
     }
   },
-  mounted () {
-    if (this.id === 'new') this.isEditable = true
-  },
-  computed: {
-    note () {
-      let n = this.$store.state.notes.all[this.id]
-      if (typeof n !== 'undefined') return n
-      else return new Note()
-    }
-  },
   watch: {
-    note: {
-      handler: function (val) {
-        this.title = val.title
-        this.body = val.body || ''
+    id: {
+      handler: function (value, oldVal) {
+        if (value === 'new') {
+          this.isEditable = true
+          this.note = new Note()
+        } else if (typeof this.$store.state.notes.all[value] !== 'undefined') {
+          this.note = this.$store.state.notes.all[value]
+        } else {
+          this.$router.push('/')
+        }
       },
       immediate: true
     }
@@ -118,16 +113,15 @@ export default {
     },
     save () {
       if (this.id === 'new') {
-        this.$store.dispatch('notes/insert', new Note(this.title, this.body))
+        this.$store.dispatch('notes/insert', this.note)
           .then((id) => {
             this.$router.push('/note/' + id)
           })
-      } else this.$store.dispatch('notes/update', { id: this.id, value: new Note(this.title, this.body) })
+      } else this.$store.dispatch('notes/update', { id: this.id, value: this.note })
     },
     deleteNote () {
       this.$q.dialog({
-        title: 'Удалить',
-        message: 'Точно удалить?',
+        title: 'Точно удалить?',
         cancel: true,
         persistent: false
       }).onOk(() => {
