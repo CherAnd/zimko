@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { Note } from 'src/models/classes'
+// import { Note } from 'src/models/classes'
 
 export default {
   name: 'note',
@@ -54,8 +54,8 @@ export default {
   },
   data () {
     return {
-      note: new Note(),
-      isEditable: false,
+      // note: new Note(),
+      isEditable: true,
       definitions: {
         insert_img: {
           tip: 'Вставить картинку',
@@ -73,19 +73,9 @@ export default {
       ]
     }
   },
-  watch: {
-    id: {
-      handler: function (value, oldVal) {
-        if (value === 'new') {
-          this.isEditable = true
-          this.note = new Note()
-        } else if (typeof this.$store.state.notes.all[value] !== 'undefined') {
-          this.note = this.$store.state.notes.all[value]
-        } else {
-          this.$router.push('/')
-        }
-      },
-      immediate: true
+  computed: {
+    note () {
+      return this.$store.state.notes.all[this.$store.state.notes.active]
     }
   },
   methods: {

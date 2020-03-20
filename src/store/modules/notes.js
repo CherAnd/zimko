@@ -50,7 +50,7 @@ store.actions = {
       })
         .then((response) => {
           commit('add', response.data.data)
-          commit('active', response.data.id)
+          commit('active', response.data.data.id)
           resolve(response.data.data.id)
         })
         .catch((error) => { reject(error) })

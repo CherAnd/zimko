@@ -36,6 +36,7 @@
 </style>
 
 <script>
+import { Note } from 'src/models/classes'
 export default {
   name: 'Index',
   computed: {
@@ -45,7 +46,12 @@ export default {
   },
   methods: {
     newNote () {
-      this.$router.push('/note/new')
+      let note = new Note()
+      console.log(note)
+      this.$store.dispatch('notes/insert', note)
+        .then((id) => {
+          this.$router.push('/note/' + id)
+        })
     }
   }
 }

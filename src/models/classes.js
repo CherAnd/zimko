@@ -5,7 +5,7 @@ export function User (id = '0', name = 'Guest', email = 'user@mail.ru') {
   this.email = email
 }
 
-export function Note (title = '', body = '') {
+export function Note (title = 'Title', body = '') {
   this.title = title
   this.body = body
 }
